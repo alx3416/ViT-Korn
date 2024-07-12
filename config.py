@@ -4,7 +4,7 @@ OUTPUT_DIR = 'out'
 INPUT_SIZE = 224
 SPLITS = ['train', 'val']
 
-BATCH_SIZE = 32
+BATCH_SIZE = 16
 NUM_WORKERS = 4
 EPOCHS = 25
 
