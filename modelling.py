@@ -8,7 +8,7 @@ import config as ini
 
 
 def set_model():
-    return models.vit_b_16(weights='IMAGENET1K_V1')
+    return models.vit_l_32(weights='IMAGENET1K_V1')
 
 
 def set_transfer(model_ft, class_names):
@@ -30,7 +30,7 @@ def set_train_model(model, criterion, optimizer, scheduler, dataloaders, device,
     since = time.time()
 
     # output directory to save training checkpoints
-    best_model_params_path = os.path.join(ini.OUTPUT_DIR, 'best_model_params.pt')
+    best_model_params_path = os.path.join(ini.OUTPUT_DIR, 'best_model_params_vit_l_32.pt')
 
     torch.save(model.state_dict(), best_model_params_path)
     best_acc = 0.0
