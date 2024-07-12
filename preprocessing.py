@@ -9,6 +9,7 @@ def augmentation_normalization():
         'train': transforms.Compose([
             transforms.RandomResizedCrop(ini.INPUT_SIZE),
             transforms.RandomHorizontalFlip(),
+            transforms.RandomVerticalFlip(),
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ]),

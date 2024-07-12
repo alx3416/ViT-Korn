@@ -1,5 +1,5 @@
 #
-DATA_DIR = 'data/hymenoptera_data'
+DATA_DIR = 'data/corn'
 OUTPUT_DIR = 'out'
 INPUT_SIZE = 224
 SPLITS = ['train', 'val']
