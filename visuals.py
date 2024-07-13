@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torchvision
 import torch
-import config as ini
+import utils as ut
 
 
 def imshow(inputs, title=None):
@@ -46,23 +46,25 @@ def visualize_model(model, device, dataloaders, class_names, num_images=6):
         model.train(mode=was_training)
 
 
-def save_plot_losses(train_loss, val_loss):
+def save_plot_losses(train_loss, val_loss, model_name):
+    ut.check_output_folder("out/" + model_name)
     plt.figure()
     plt.plot(train_loss, label='training')
     plt.plot(val_loss, label='validation')
-    plt.title(ini.MODEL + ' model loss')
+    plt.title(model_name + ' model loss')
     plt.xlabel('epoch')
     plt.ylabel('loss')
     plt.legend()
-    plt.savefig('out/' + ini.MODEL + '_loss.svg', format='svg')
+    plt.savefig("out/" + model_name + "/" + model_name + '_loss.svg', format='svg')
 
 
-def save_plot_accuracies(train_acc, val_acc):
+def save_plot_accuracies(train_acc, val_acc, model_name):
+    ut.check_output_folder("out/" + model_name)
     plt.figure()
     plt.plot(train_acc, label='training')
     plt.plot(val_acc, label='validation')
-    plt.title(ini.MODEL + ' model accuracy')
+    plt.title(model_name + ' model accuracy')
     plt.xlabel('epoch')
     plt.ylabel('accuracy')
     plt.legend()
-    plt.savefig('out/' + ini.MODEL + '_accuracy.svg', format='svg')
+    plt.savefig("out/" + model_name + "/" + model_name + '_accuracy.svg', format='svg')
