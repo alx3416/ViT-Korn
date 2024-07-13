@@ -57,7 +57,7 @@ def set_train_model(model, criterion, optimizer, scheduler, dataloaders, device,
     since = time.time()
 
     # output directory to save training checkpoints
-    best_model_params_path = os.path.join(ini.OUTPUT_DIR, 'best_model_params_swin_v2_b.pt')
+    best_model_params_path = os.path.join(ini.OUTPUT_DIR, 'best_checkpoint_' + ini.MODEL + '.pt')
 
     torch.save(model.state_dict(), best_model_params_path)
     best_acc = 0.0
