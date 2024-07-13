@@ -23,7 +23,7 @@ class_names = pre.get_classes_names(image_datasets)
 device = pre.set_device()
 
 inputs, classes = pre.get_training_batch_sample(dataloaders)
-# vis.imshow(inputs, title=[class_names[x] for x in classes])
+vis.imshow(inputs, title=[class_names[x] for x in classes])
 
 model_ft = mdll.set_model()
 model_ft = mdll.set_transfer(model_ft, class_names)
@@ -40,4 +40,4 @@ model_ft = mdll.set_train_model(model_ft, criterion, optimizer_ft, exp_lr_schedu
                                 dataloaders, device, dataset_sizes,
                                 num_epochs=ini.EPOCHS)
 
-torch.save(model_ft.state_dict(), 'out/best_mobilenet_v3_large.pt')
+torch.save(model_ft.state_dict(), 'out/best_swin_v2_b.pt')
