@@ -8,33 +8,43 @@ import config as ini
 
 
 def set_model():
-    return models.swin_v2_b(weights='IMAGENET1K_V1')
+    if ini.MODEL == "googlenet":
+        model = models.googlenet(weights='IMAGENET1K_V1')
+    elif ini.MODEL == "resnet50":
+        model = models.resnet50(weights='IMAGENET1K_V1')
+    elif ini.MODEL == "mobilenet_v3_large":
+        model = models.mobilenet_v3_large(weights='IMAGENET1K_V1')
+    elif ini.MODEL == "swin_v2_b":
+        model = models.swin_v2_b(weights='IMAGENET1K_V1')
+    elif ini.MODEL == "vit_b_16":
+        model = models.vit_b_16(weights='IMAGENET1K_V1')
+    elif ini.MODEL == "vit_b_32":
+        model = models.vit_b_32(weights='IMAGENET1K_V1')
+    return model
 
 
 def set_transfer(model_ft, class_names):
-    # For CNN-googleNet
-    # num_ftrs = model_ft.fc.in_features
-    # For MobileNetV3
-    # num_ftrs = model_ft.classifier[0].in_features
+    if ini.MODEL == "googlenet" or ini.MODEL == "resnet50":
+        num_ftrs = model_ft.fc.in_features
+        model_ft.fc = nn.Linear(num_ftrs, len(class_names))
+    elif ini.MODEL == "swin_v2_b":
+        num_ftrs = model_ft.head.in_features
+        model_ft.fc = nn.Linear(num_ftrs, len(class_names))
+    elif ini.MODEL == "vit_b_16" or ini.MODEL == "vit_b_32":
+        num_ftrs = model_ft.heads.head.in_features
+        model_ft.fc = nn.Linear(num_ftrs, len(class_names))
+    elif ini.MODEL == "mobilenet_v3_large":
+        num_ftrs = model_ft.classifier[0].in_features
+        model_ft.classifier = nn.Sequential(
+            nn.Linear(in_features=num_ftrs, out_features=4096, bias=True),
+            nn.ReLU(inplace=True),
+            nn.Dropout(p=0.5, inplace=False),
+            nn.Linear(in_features=4096, out_features=4096, bias=True),
+            nn.ReLU(inplace=True),
+            nn.Dropout(p=0.5, inplace=False),
+            nn.Linear(in_features=4096, out_features=len(class_names), bias=True)
+        )
 
-
-    # For ViT(heads.head) (swin is just head)
-    num_ftrs = model_ft.head.in_features
-
-    # For CNN-googlenet-resnet-ViT
-    model_ft.fc = nn.Linear(num_ftrs, len(class_names))
-
-    # For MobileNetV3 in case Vit and CNN replace classifier with fc
-    # model_ft.classifier = nn.Linear(num_ftrs, len(class_names))
-    # model_ft.classifier = nn.Sequential(
-    #     nn.Linear(in_features=num_ftrs, out_features=4096, bias=True),
-    #     nn.ReLU(inplace=True),
-    #     nn.Dropout(p=0.5, inplace=False),
-    #     nn.Linear(in_features=4096, out_features=4096, bias=True),
-    #     nn.ReLU(inplace=True),
-    #     nn.Dropout(p=0.5, inplace=False),
-    #     nn.Linear(in_features=4096, out_features=4, bias=True)
-    # )
     return model_ft
 
 
@@ -47,7 +57,7 @@ def set_train_model(model, criterion, optimizer, scheduler, dataloaders, device,
     since = time.time()
 
     # output directory to save training checkpoints
-    best_model_params_path = os.path.join(ini.OUTPUT_DIR, 'best_model_params_swin_v2_b.pt')
+    best_model_params_path = os.path.join(ini.OUTPUT_DIR, 'best_checkpoint_' + ini.MODEL + '.pt')
 
     torch.save(model.state_dict(), best_model_params_path)
     best_acc = 0.0

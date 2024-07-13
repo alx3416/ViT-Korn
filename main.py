@@ -40,4 +40,4 @@ model_ft = mdll.set_train_model(model_ft, criterion, optimizer_ft, exp_lr_schedu
                                 dataloaders, device, dataset_sizes,
                                 num_epochs=ini.EPOCHS)
 
-torch.save(model_ft.state_dict(), 'out/best_swin_v2_b.pt')
+torch.save(model_ft.state_dict(), 'out/'+ini.MODEL+'.pt')
