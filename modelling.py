@@ -8,18 +8,31 @@ import config as ini
 
 
 def set_model():
-    return models.swin_v2_b(weights='IMAGENET1K_V1')
+    if ini.MODEL == "googlenet":
+        model = models.googlenet(weights='IMAGENET1K_V1')
+    elif ini.MODEL == "resnet50":
+        model = models.resnet50(weights='IMAGENET1K_V1')
+    elif ini.MODEL == "mobilenet_v3_large":
+        model = models.mobilenet_v3_large(weights='IMAGENET1K_V1')
+    elif ini.MODEL == "swin_v2_b":
+        model = models.swin_v2_b(weights='IMAGENET1K_V1')
+    elif ini.MODEL == "vit_b_16":
+        model = models.vit_b_16(weights='IMAGENET1K_V1')
+    elif ini.MODEL == "vit_b_32":
+        model = models.vit_b_32(weights='IMAGENET1K_V1')
+    return model
 
 
 def set_transfer(model_ft, class_names):
+    if ini.MODEL == "googlenet":
     # For CNN-googleNet
-    # num_ftrs = model_ft.fc.in_features
+        num_ftrs = model_ft.fc.in_features
     # For MobileNetV3
     # num_ftrs = model_ft.classifier[0].in_features
 
 
     # For ViT(heads.head) (swin is just head)
-    num_ftrs = model_ft.head.in_features
+    # num_ftrs = model_ft.head.in_features
 
     # For CNN-googlenet-resnet-ViT
     model_ft.fc = nn.Linear(num_ftrs, len(class_names))

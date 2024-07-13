@@ -10,5 +10,5 @@ SPLITS = ['train', 'val']
 MODEL = "googlenet"
 BATCH_SIZE = 4
 NUM_WORKERS = 4
-EPOCHS = 25
+EPOCHS = 2
 
