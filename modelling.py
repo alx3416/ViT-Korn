@@ -61,7 +61,10 @@ def set_train_model(model, criterion, optimizer, scheduler, dataloaders, device,
 
     torch.save(model.state_dict(), best_model_params_path)
     best_acc = 0.0
-
+    history_train_loss = []
+    history_train_acc = []
+    history_val_loss = []
+    history_val_acc = []
     for epoch in range(num_epochs):
         print(f'Epoch {epoch}/{num_epochs - 1}')
         print('-' * 10)
@@ -105,12 +108,19 @@ def set_train_model(model, criterion, optimizer, scheduler, dataloaders, device,
             epoch_loss = running_loss / dataset_sizes[phase]
             epoch_acc = running_corrects.double() / dataset_sizes[phase]
 
+
             print(f'{phase} Loss: {epoch_loss:.4f} Acc: {epoch_acc:.4f}')
 
             # deep copy the model
             if phase == 'val' and epoch_acc > best_acc:
                 best_acc = epoch_acc
                 torch.save(model.state_dict(), best_model_params_path)
+            if phase == 'train':
+                history_train_loss.append(epoch_loss)
+                history_train_acc.append(epoch_acc.detach().item())
+            elif phase == 'val':
+                history_val_loss.append(epoch_loss)
+                history_val_acc.append(epoch_acc.detach().item())
 
         print()
 
@@ -120,4 +130,15 @@ def set_train_model(model, criterion, optimizer, scheduler, dataloaders, device,
 
     # load best model weights
     model.load_state_dict(torch.load(best_model_params_path))
-    return model
+    return model, history_train_loss, history_train_acc, history_val_loss, history_val_acc
+
+
+def save_historic_data(train_loss, train_accuracy, val_loss, val_accuracy):
+    with open("out/training_loss_" + ini.MODEL + ".txt", "w") as output:
+        output.write(str(train_loss))
+    with open("out/training_accuracy_" + ini.MODEL + ".txt", "w") as output:
+        output.write(str(train_accuracy))
+    with open("out/val_loss_" + ini.MODEL + ".txt", "w") as output:
+        output.write(str(val_loss))
+    with open("out/val_accuracy_" + ini.MODEL + ".txt", "w") as output:
+        output.write(str(val_accuracy))
