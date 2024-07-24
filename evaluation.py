@@ -7,6 +7,8 @@ from torchvision import transforms
 from PIL import Image
 import os
 from torch.utils.data import Dataset, DataLoader
+from sklearn.metrics import confusion_matrix, classification_report
+from sklearn import preprocessing
 
 model_name = ini.MODEL
 # model = mdll.set_model(model_name)
@@ -23,6 +25,12 @@ model_name = model_name[0]
 # Definir la ruta del modelo entrenado y la carpeta base de imágenes de prueba
 modelo_ruta = "out/" + model_name + "/" + model_name + ".pt"
 carpeta_base_imagenes = 'data/corn/val/'
+
+
+def get_confusion_matrix(diabetes_y_test, diabetes_y_pred, target_names):
+    cnf_matrix = confusion_matrix(diabetes_y_test, diabetes_y_pred)
+    print(classification_report(diabetes_y_test, diabetes_y_pred, target_names=target_names))
+    return cnf_matrix
 
 
 # Definir una clase Dataset personalizada para cargar las imágenes
@@ -94,3 +102,7 @@ for imagenes_batch, etiquetas_batch in data_loader:
         y_pred.append(prediccion_actual.item())
         y_test.append(etiqueta_actual.item())
 print("total de etiquetas: ", len(y_pred))
+
+names = ['Gray_leaf_spot', 'Common_rust', 'healthy', 'Northern_leaf_blight']
+confusion_matrix = get_confusion_matrix(y_pred, y_test, names)
+
