@@ -67,5 +67,5 @@ for model_name in ini.MODEL:
             y_pred.append(prediccion_actual.item())
             y_test.append(etiqueta_actual.item())
 
-    confusion_matrix = get_confusion_matrix(y_pred, y_test, class_names)
-    vis.save_confusion_matrix(confusion_matrix, model_name)
+    confusion_matrix = get_confusion_matrix(y_pred, y_test, class_names, model_name)
+    vis.save_confusion_matrix(confusion_matrix, model_name, class_names)
