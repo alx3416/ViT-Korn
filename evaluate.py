@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def get_confusion_matrix(diabetes_y_test, diabetes_y_pred, target_names, model_name):
-    cnf_matrix = confusion_matrix(diabetes_y_test, diabetes_y_pred)
-    print(classification_report(diabetes_y_test, diabetes_y_pred, target_names=target_names))
-    report = classification_report(diabetes_y_test, diabetes_y_pred, target_names=target_names, output_dict=True)
+def get_confusion_matrix(y_test, y_pred, target_names, model_name):
+    cnf_matrix = confusion_matrix(y_test, y_pred)
+    print(classification_report(y_test, y_pred, target_names=target_names))
+    report = classification_report(y_test, y_pred, target_names=target_names, output_dict=True)
     print(report)
     pandas_report = pd.DataFrame(report).transpose()
     pandas_report.to_csv("out/" + model_name + "/" + model_name + '_classification_report.csv')
@@ -67,5 +67,5 @@ for model_name in ini.MODEL:
             y_pred.append(prediccion_actual.item())
             y_test.append(etiqueta_actual.item())
 
-    confusion_matrix = get_confusion_matrix(y_pred, y_test, class_names, model_name)
-    vis.save_confusion_matrix(confusion_matrix, model_name, class_names)
+    confusion_mtrx = get_confusion_matrix(y_pred, y_test, class_names, model_name)
+    vis.save_confusion_matrix(confusion_mtrx, model_name, class_names)
