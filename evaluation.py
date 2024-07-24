@@ -8,6 +8,9 @@ from PIL import Image
 import os
 from torch.utils.data import Dataset, DataLoader
 from sklearn.metrics import confusion_matrix, classification_report
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
 from sklearn import preprocessing
 
 model_name = ini.MODEL
@@ -29,8 +32,18 @@ carpeta_base_imagenes = 'data/corn/val/'
 
 def get_confusion_matrix(diabetes_y_test, diabetes_y_pred, target_names):
     cnf_matrix = confusion_matrix(diabetes_y_test, diabetes_y_pred)
-    print(classification_report(diabetes_y_test, diabetes_y_pred, target_names=target_names))
+    report = classification_report(diabetes_y_test, diabetes_y_pred, target_names=target_names, output_dict=True)
+    print(report)
+    pandas_report = pd.DataFrame(report).transpose()
+    pandas_report.to_csv("out/classification_report.csv")
     return cnf_matrix
+
+
+def save_confusion_matrix(confusion):
+    new_fig = plt.figure()
+    sns.heatmap(confusion, annot=True, cmap='Blues')
+    plt.savefig("out/confusion_matrix.png")
+    plt.close(new_fig)
 
 
 # Definir una clase Dataset personalizada para cargar las imágenes
@@ -105,4 +118,5 @@ print("total de etiquetas: ", len(y_pred))
 
 names = ['Gray_leaf_spot', 'Common_rust', 'healthy', 'Northern_leaf_blight']
 confusion_matrix = get_confusion_matrix(y_pred, y_test, names)
+save_confusion_matrix(confusion_matrix)
 
