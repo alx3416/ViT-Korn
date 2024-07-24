@@ -3,6 +3,7 @@ import numpy as np
 import torchvision
 import torch
 import utils as ut
+import seaborn as sns
 
 
 def imshow(inputs, title=None):
@@ -68,3 +69,10 @@ def save_plot_accuracies(train_acc, val_acc, model_name):
     plt.ylabel('accuracy')
     plt.legend()
     plt.savefig("out/" + model_name + "/" + model_name + '_accuracy.svg', format='svg')
+
+
+def save_confusion_matrix(confusion, model_name):
+    new_fig = plt.figure()
+    sns.heatmap(confusion, annot=True, cmap='Blues')
+    plt.savefig("out/" + model_name + "/" + model_name + '_confusion_matrix.svg', format='svg')
+    plt.close(new_fig)
