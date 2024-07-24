@@ -10,4 +10,4 @@ SPLITS = ['train', 'val']
 MODEL = ["googlenet"]  #, "mobilenet_v3_large", "resnet50", "swin_v2_b", "vit_b_16", "vit_b_32"]
 BATCH_SIZE = 4
 NUM_WORKERS = 1
-EPOCHS = 1
+EPOCHS = 2

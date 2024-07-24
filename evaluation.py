@@ -116,7 +116,7 @@ for imagenes_batch, etiquetas_batch in data_loader:
         y_test.append(etiqueta_actual.item())
 print("total de etiquetas: ", len(y_pred))
 
-names = ['Gray_leaf_spot', 'Common_rust', 'healthy', 'Northern_leaf_blight']
+names = ['Cercospora_gray_leaf_spot', 'Common_rust', 'Northern_leaf_blight', 'healthy']
 confusion_matrix = get_confusion_matrix(y_pred, y_test, names)
 save_confusion_matrix(confusion_matrix)
 
