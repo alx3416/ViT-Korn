@@ -22,7 +22,7 @@ transformaciones = transforms.Compose([
 model_name = model_name[0]
 # Definir la ruta del modelo entrenado y la carpeta base de imágenes de prueba
 modelo_ruta = "out/" + model_name + "/" + model_name + ".pt"
-carpeta_base_imagenes = 'data/corn/test/'
+carpeta_base_imagenes = 'data/corn/val/'
 
 
 # Definir una clase Dataset personalizada para cargar las imágenes
@@ -65,14 +65,20 @@ dataset = ImagenesDataset(carpeta_base_imagenes, transformaciones)
 # Crear un DataLoader para manejar los lotes de datos
 batch_size = 4
 data_loader = DataLoader(dataset, batch_size=batch_size, shuffle=False)
+device = pre.set_device()
 
 # Cargar el modelo
 model = mdll.set_model(model_name)
-modelo = model.load_state_dict(torch.load(modelo_ruta))
+modelo = torch.load(modelo_ruta)
 modelo.eval()
+modelo.to(device)
 
+y_pred = []
+y_test = []
 # Iterar sobre los lotes de datos
 for imagenes_batch, etiquetas_batch in data_loader:
+    imagenes_batch = imagenes_batch.to(device)
+    etquetas_batch = etiquetas_batch.to(device)
     # Pasar el batch de imágenes a través del modelo
     with torch.no_grad():
         salidas = modelo(imagenes_batch)
@@ -81,10 +87,10 @@ for imagenes_batch, etiquetas_batch in data_loader:
     _, predicciones = torch.max(salidas, 1)
 
     # Aquí puedes manejar las predicciones como lo necesites
-    for i in range(batch_size):
+    for i in range(etiquetas_batch.shape[0]):
         imagen_actual = imagenes_batch[i]
         etiqueta_actual = etiquetas_batch[i]
         prediccion_actual = predicciones[i]
-
-        print(
-            f'Predicción para imagen {i + 1} del batch: Clase {prediccion_actual.item()} (Real: {etiqueta_actual.item()})')
+        y_pred.append(prediccion_actual.item())
+        y_test.append(etiqueta_actual.item())
+print("total de etiquetas: ", len(y_pred))
