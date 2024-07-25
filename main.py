@@ -45,7 +45,8 @@ for model_name in ini.MODEL:
                                                                               num_epochs=ini.EPOCHS)
 
     ut.check_output_folder("out/" + model_name)
-    torch.save(model_ft.state_dict(), "out/" + model_name + "/" + model_name + '.pt')
+    torch.save(model_ft.state_dict(), "out/" + model_name + "/" + model_name + '_state_dict.pt')
+    torch.save(model_ft, "out/" + model_name + "/" + model_name + '.pt')
     mdll.save_historic_data(train_loss, train_acc, val_loss, val_acc, model_name)
     vis.save_plot_losses(train_loss, val_loss, model_name)
     vis.save_plot_accuracies(train_acc, val_acc, model_name)
