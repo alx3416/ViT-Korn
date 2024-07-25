@@ -126,6 +126,8 @@ def set_train_model(model, criterion, optimizer, scheduler, dataloaders, device,
 
     time_elapsed = time.time() - since
     print(f'Training complete in {time_elapsed // 60:.0f}m {time_elapsed % 60:.0f}s')
+    with open("out/"+model_name+'_time.txt', 'w') as f:
+        f.write("balance %d" % time_elapsed)
     print(f'Best val Acc: {best_acc:4f}')
 
     # load best model weights
