@@ -68,4 +68,5 @@ for model_name in ini.MODEL:
             y_test.append(etiqueta_actual.item())
 
     confusion_mtrx = get_confusion_matrix(y_pred, y_test, class_names, model_name)
-    vis.save_confusion_matrix(confusion_mtrx, model_name, class_names)
+    class_names_short = ['CLS', 'CR', 'NLB', 'H']
+    vis.save_confusion_matrix(confusion_mtrx, model_name, class_names_short)
