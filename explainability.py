@@ -7,12 +7,13 @@ import numpy as np
 import torch
 from torchsummary import summary
 
-model_name = "resnet50"
+model_name = "mobilenet_v3_large"
 # model = resnet50(pretrained=True)
 model_path = "out/" + model_name + "/" + model_name + ".pt"
 model = torch.load(model_path)
 model.eval()
-target_layers = [model.layer4[-1]]
+print(model)
+target_layers = [model.features[-1]]
 
 rgb_img = cv2.imread("data/corn/test/01_Cercospora_leaf_spot/2174d811-b088-4b31-8088-1738630b94d4___RS_GLSp 4467.JPG", 1)[:, :, ::-1]
 rgb_img = cv2.resize(rgb_img, (224, 224))
