@@ -73,6 +73,6 @@ def save_plot_accuracies(train_acc, val_acc, model_name):
 
 def save_confusion_matrix(confusion, model_name, class_names):
     new_fig = plt.figure()
-    sns.heatmap(confusion, annot=True, cmap='Blues', xticklabels=class_names, yticklabels=class_names)
+    sns.heatmap(confusion, annot=True, fmt=".4g", cmap='Blues', xticklabels=class_names, yticklabels=class_names)
     plt.savefig("out/" + model_name + "/" + model_name + '_confusion_matrix.svg', format='svg')
     plt.close(new_fig)
