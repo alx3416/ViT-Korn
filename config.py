@@ -1,7 +1,7 @@
 # dataset options
 DATA_DIR = 'data/NTU'
 OUTPUT_DIR = 'out'
-INPUT_SIZE = 1000
+INPUT_SIZE = 500
 SPLITS = ['train', 'val']
 
 # Training options
